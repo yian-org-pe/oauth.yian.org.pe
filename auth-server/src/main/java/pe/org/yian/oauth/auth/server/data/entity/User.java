@@ -2,8 +2,10 @@ package pe.org.yian.oauth.auth.server.data.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "user")
 public class User {
 	@Id
 	private String email;
