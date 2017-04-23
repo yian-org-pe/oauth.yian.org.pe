@@ -16,6 +16,14 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>jcenter-snapshots</id>
+			<name>jcenter</name>
+			<url>https://jcenter.bintray.com/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -55,6 +63,9 @@
 			</exclusions>
 		</dependency>
 
+		<!-- dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-data-commons</artifactId> 
+			<version>1.10.6</version> </dependency -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -70,6 +81,23 @@
 			<artifactId>javassist</artifactId>
 			<version>3.17.1-GA</version>
 		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>pe.org.yian.oauth</groupId>
+			<artifactId>auth-data</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>auth-server</finalName>
@@ -77,12 +105,12 @@
 
 	<profiles>
 		<profile>
-			<!-- When built in OpenShift the 'openshift' profile will be used when
-                invoking mvn. -->
-			<!-- Use this profile for any OpenShift specific customization your app
-                will need. -->
-			<!-- By default that is to put the resulting archive into the 'webapps'
-                folder. -->
+			<!-- When built in OpenShift the 'openshift' profile will be used when 
+				invoking mvn. -->
+			<!-- Use this profile for any OpenShift specific customization your app 
+				will need. -->
+			<!-- By default that is to put the resulting archive into the 'webapps' 
+				folder. -->
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
 			<id>openshift</id>
 			<build>

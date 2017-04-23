@@ -12,8 +12,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 import pe.org.yian.oauth.auth.server.data.repository.UserRepository;
+import pe.org.yian.oauth.auth.server.data.entity.Role;
 import pe.org.yian.oauth.auth.server.data.entity.User;
 
 @Service
@@ -23,6 +26,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	private UserRepository userRepository;
 
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		LOGGER.info("Loading user info");
 		User user = userRepository.findOne(username);
@@ -31,8 +35,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			LOGGER.info("user not found :/");
 			throw new UsernameNotFoundException("Usuario no encontrado");
 		}
+		
 		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
+		for (Role role : user.getRoles()) {
+			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
+		
 		return new org.springframework.security.core.userdetails.User(username, user.getPassword(), grantedAuthorities);
 	}
 
