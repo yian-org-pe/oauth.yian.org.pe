@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import pe.org.yian.oauth.auth.server.config.OAuth2AuthorizationServerConfig;
 
 @SpringBootApplication
-@EnableResourceServer
 public class OAuthAuthenticationServer extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

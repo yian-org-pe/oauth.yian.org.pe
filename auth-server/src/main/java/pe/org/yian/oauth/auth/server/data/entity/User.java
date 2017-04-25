@@ -1,5 +1,6 @@
 package pe.org.yian.oauth.auth.server.data.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -21,6 +22,10 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_has_roles", joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private List<Role> roles;
+
+	@ManyToMany
+	@JoinTable(name = "user_belongs_organization", joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "organization_code", referencedColumnName = "code"))
+	private List<Organization> organizations;
 
 	public String getEmail() {
 		return email;
@@ -60,5 +65,20 @@ public class User {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public List<Organization> getOrganizations() {
+		return organizations;
+	}
+
+	public void setOrganizations(List<Organization> organizations) {
+		this.organizations = organizations;
+	}
+	
+	public void addOrganization (Organization organization) {
+		if (this.organizations == null) {
+			this.organizations = new  ArrayList<>();
+		}
+		this.organizations.add(organization);
 	}
 }

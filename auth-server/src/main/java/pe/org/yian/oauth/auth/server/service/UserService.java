@@ -8,4 +8,6 @@ public interface UserService {
 	UserDto create (UserDto user);
 	UserDto update (UserDto user);
 	void disable (String username);
+	
+//	void signUp (UserDto user);
 }

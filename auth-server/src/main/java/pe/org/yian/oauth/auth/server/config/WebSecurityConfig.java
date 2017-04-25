@@ -1,27 +1,39 @@
 package pe.org.yian.oauth.auth.server.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+//	@Autowired
+//	private AuthenticationManager authenticationManager;
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// TODO Auto-generated method stub
-//		super.configure(http);
-		http.authorizeRequests()
-			.antMatchers("/resources/**").permitAll()
-			.anyRequest().authenticated()
+		http.authorizeRequests().antMatchers("/resources/**").permitAll();
+		
+		http.requestMatchers().antMatchers("/uaa/**", "/oauth/authorize").and().authorizeRequests()
+		.antMatchers("/uaa/**").authenticated()
+		.antMatchers("/oauth/authorize").authenticated()
 			.and()
-			.formLogin().loginPage("/login").permitAll()
+			.formLogin().loginPage("/uaa/login").permitAll()
 			.and()
-			.logout()
-			.logoutUrl("/logout");
+			.logout().logoutUrl("/uaa/logout");
 	}
+
+//	@Override
+//	public void configure(WebSecurity web) throws Exception {
+//		web.ignoring().antMatchers("/api/**");
+//	}
 	
 
 //	@Override

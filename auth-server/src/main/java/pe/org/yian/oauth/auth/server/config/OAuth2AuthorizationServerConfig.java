@@ -9,6 +9,10 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -29,12 +33,28 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 		endpoints.tokenStore(tokenStore())
 				.accessTokenConverter(accessTokenConverter())
 				.authenticationManager(authenticationManager);
+		
+//		endpoints.requestFactory(defaultOAuth2RequestFactory());
 	}
+	
+	@Bean
+	public ClientDetailsService clientDetailsService() {
+		return new JdbcClientDetailsService(dataSource);
+	}
+	
+//	@Bean
+//    @Primary
+//    public OAuth2RequestFactory defaultOAuth2RequestFactory() {
+//        DefaultOAuth2RequestFactory defaultOAuth2RequestFactory = new DefaultOAuth2RequestFactory(
+//        		clientDetailsService());
+//        defaultOAuth2RequestFactory.setCheckUserScopes(true);
+//        return defaultOAuth2RequestFactory;
+//    }
 
-	@Override
-	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.jdbc(dataSource);
-	}
+//	@Override
+//	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+//		clients.jdbc(dataSource);
+//	}
 
 	@Bean
 	public TokenStore tokenStore() {
