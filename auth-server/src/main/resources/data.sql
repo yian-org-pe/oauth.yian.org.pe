@@ -1,7 +1,7 @@
 insert into oauth_client_details (client_id, resource_ids, client_secret, scope,
 authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity,
 refresh_token_validity, additional_information, autoapprove)
-values ('bac8881e-2541-44d0-af9c-2fcd4fb94167', '', 'cascader', 'read,write,update,delete', 'implicit,password',
+values ('bac8881e-2541-44d0-af9c-2fcd4fb94167', '', 'cascader', 'read,write,delete', 'implicit,password',
 'http://localhost:3000,https://ventasclient-dem0nline011.rhcloud.com', '', null, null, '{}', false);
 
 insert into oauth_client_details (client_id, resource_ids, client_secret, scope,

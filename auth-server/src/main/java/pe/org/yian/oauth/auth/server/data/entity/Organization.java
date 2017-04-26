@@ -15,6 +15,7 @@ public class Organization {
 	@Id
 	private String code;
 	private String name;
+	private String status;
 	
 	@OneToMany(mappedBy="organization")
 	private List<Application> applications;
@@ -26,10 +27,11 @@ public class Organization {
 		super();
 	}
 
-	public Organization(String code, String name) {
+	public Organization(String code, String name, String status) {
 		super();
 		this.code = code;
 		this.name = name;
+		this.status = status;
 	}
 
 	public Organization(String code, String name, List<Application> applications) {
@@ -69,5 +71,13 @@ public class Organization {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }
