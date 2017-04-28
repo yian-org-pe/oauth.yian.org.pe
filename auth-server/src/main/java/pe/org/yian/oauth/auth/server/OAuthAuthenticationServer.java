@@ -1,7 +1,5 @@
 package pe.org.yian.oauth.auth.server;
 
-import java.time.LocalDate;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -36,7 +34,7 @@ public class OAuthAuthenticationServer extends SpringBootServletInitializer {
 	public Docket petApi() {
 		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any()).build().pathMapping("/")
-				.directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)
+//				.directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)
 				// .alternateTypeRules(
 				// newRule(typeResolver.resolve(DeferredResult.class,
 				// typeResolver.resolve(ResponseEntity.class,
