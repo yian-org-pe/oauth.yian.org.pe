@@ -14,9 +14,10 @@ pipeline {
 		
 		stage('deploy') {
 			steps {
-				sshagent(credentials: ['jenkins-docker']) {
-					sh 'git push ssh://588ac97789f5cff8a700001b@auth-devok.rhcloud.com/~/git/auth.git/ HEAD:master';
-				}
+				sh 'git push ssh://588ac97789f5cff8a700001b@auth-devok.rhcloud.com/~/git/auth.git/ HEAD:master';
+//				sshagent(credentials: ['jenkins-docker']) {
+					
+//				}
 			}
 		}
 	}
