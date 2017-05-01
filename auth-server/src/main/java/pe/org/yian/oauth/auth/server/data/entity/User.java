@@ -27,6 +27,18 @@ public class User {
 	@JoinTable(name = "user_belongs_organization", joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "organization_code", referencedColumnName = "code"))
 	private List<Organization> organizations;
 
+	public User() {
+	}
+
+	public User(String username, String email, String name, String password, List<Role> roles, List<Organization> organizations) {
+		this.username = username;
+		this.email = email;
+		this.name = name;
+		this.password = password;
+		this.roles = roles;
+		this.organizations = organizations;
+	}
+
 	public String getEmail() {
 		return email;
 	}

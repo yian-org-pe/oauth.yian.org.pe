@@ -1,9 +1,13 @@
 package pe.org.yian.oauth.auth.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 public class UserDto {
 	private String username;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private String password;
 	private String email;
 	private String name;
 	private List<RoleDto> roles;
@@ -17,6 +21,14 @@ public class UserDto {
 		this.email = email;
 		this.name = name;
 		this.roles = roles;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getUsername() {

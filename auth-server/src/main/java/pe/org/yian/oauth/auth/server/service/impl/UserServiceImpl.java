@@ -1,17 +1,22 @@
 package pe.org.yian.oauth.auth.server.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import pe.org.yian.oauth.auth.data.dto.RoleDto;
 import pe.org.yian.oauth.auth.data.dto.UserDto;
+import pe.org.yian.oauth.auth.server.data.entity.Organization;
 import pe.org.yian.oauth.auth.server.data.entity.Role;
 import pe.org.yian.oauth.auth.server.data.entity.User;
+import pe.org.yian.oauth.auth.server.data.repository.OrganizationRepository;
+import pe.org.yian.oauth.auth.server.data.repository.RoleRepository;
 import pe.org.yian.oauth.auth.server.data.repository.UserRepository;
 import pe.org.yian.oauth.auth.server.service.UserService;
 
@@ -19,11 +24,23 @@ import pe.org.yian.oauth.auth.server.service.UserService;
 public class UserServiceImpl implements UserService {
 	private static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	private UserRepository userRepository;
+	private OrganizationRepository organizationRepository;
+	private RoleRepository roleRepository;
+	private PasswordEncoder passwordEncoder;
+
+	private static final String USER_ROLE = "USER";
+	private static final String ADMIN_ROLE = "ADMIN";
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository,
+						   OrganizationRepository organizationRepository,
+						   RoleRepository roleRepository,
+						   PasswordEncoder passwordEncoder) {
 		super();
 		this.userRepository = userRepository;
+		this.organizationRepository = organizationRepository;
+		this.roleRepository = roleRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
@@ -45,9 +62,37 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto create(UserDto user) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional
+	public void create(UserDto user) {
+		if (userExists(user.getUsername())) {
+			// TODO throw excpetion
+			return;
+		}
+
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User u = userRepository.findOne(username);
+		Organization o = null;
+		if (user.getOrganizations() != null && !user.getOrganizations().isEmpty()) {
+			o = organizationRepository
+					.findByCodeAndUsersUsername(user.getOrganizations().get(0).getCode(), username);
+		}
+
+		if (o == null) {
+			o = u.getOrganizations().get(0);
+		}
+
+		Set<String> roleNames = new HashSet<>(Arrays.asList(USER_ROLE));
+
+		for (RoleDto r:user.getRoles()) {
+			roleNames.add(r.getName());
+		}
+
+		List<Role> userRoles = new ArrayList<>(roleRepository.findByNameIn(roleNames));
+
+		User newUser = new User(user.getUsername(), user.getEmail(), user.getName(),
+				passwordEncoder.encode(user.getPassword()), userRoles, new ArrayList<>(Arrays.asList(o)));
+
+		userRepository.save(newUser);
 	}
 
 	@Override
@@ -60,5 +105,21 @@ public class UserServiceImpl implements UserService {
 	public void disable(String username) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void changePassword(String username, String newPassword) {
+		String adminUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.findByUsernameAndOrganizationsUsersUsername(username, adminUsername);
+		if (user == null) {
+			// TODO throw exception
+			return;
+		}
+		user.setPassword(passwordEncoder.encode(newPassword));
+		userRepository.save(user);
+	}
+
+	private boolean userExists (String username) {
+		return userRepository.countByUsername(username) > 0;
 	}
 }

@@ -5,7 +5,22 @@ import pe.org.yian.oauth.auth.data.dto.UserDto;
 public interface UserService {
 
 	UserDto load (String username);
-	UserDto create (UserDto user);
+
+	/**
+	 * Will create a new user on the system, it will assign the first
+	 * organization in the object, if none exists, it will assign the
+	 * first of the current logged user.
+	 *
+	 * It will add user role by default
+	 *
+	 * if the username already exists on the system, returns null
+	 *
+	 * @param user to be created
+	 * @return new user
+	 */
+	void create (UserDto user);
+
+	void changePassword(String username, String newPassword);
 	UserDto update (UserDto user);
 	void disable (String username);
 	
