@@ -70,4 +70,13 @@ public class UserDto {
 	public void setOrganizations(List<OrganizationDto> organizations) {
 		this.organizations = organizations;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDto{" +
+				"username='" + username + '\'' +
+				", email='" + email + '\'' +
+				", name='" + name + '\'' +
+				'}';
+	}
 }
