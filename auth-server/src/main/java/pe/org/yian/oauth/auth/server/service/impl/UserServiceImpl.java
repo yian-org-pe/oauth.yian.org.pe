@@ -103,8 +103,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void disable(String username) {
-		// TODO Auto-generated method stub
-		
+		String adminUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		if (!canEditUserInfo(adminUsername, username)) {
+			// TODO throw exception
+			return;
+		}
+		userRepository.setEnabledStatus(username, false);
 	}
 
 	@Override
@@ -121,5 +125,11 @@ public class UserServiceImpl implements UserService {
 
 	private boolean userExists (String username) {
 		return userRepository.countByUsername(username) > 0;
+	}
+
+	private boolean canEditUserInfo (String adminUsername, String editingUsername) {
+		// TODO: Change this method to check if user is admin :o
+		User user = userRepository.findByUsernameAndOrganizationsUsersUsername(editingUsername, adminUsername);
+		return user != null;
 	}
 }

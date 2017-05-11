@@ -20,8 +20,18 @@ public interface UserService {
 	 */
 	void create (UserDto user);
 
+	/**
+	 * Changes the password to a new value
+	 * @param username whom password will be changed
+	 * @param newPassword to asign to the user
+	 */
 	void changePassword(String username, String newPassword);
 	UserDto update (UserDto user);
+
+	/**
+	 * disables a user by username
+	 * @param username to be disabled
+	 */
 	void disable (String username);
 	
 //	void signUp (UserDto user);

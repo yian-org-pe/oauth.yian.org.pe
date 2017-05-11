@@ -9,12 +9,12 @@ import pe.org.yian.oauth.client.service.MeService;
 /**
  * Created by jaxkodex on 01/05/17.
  */
-@Service
+//@Service
 public class MeServiceImpl implements MeService {
     private OAuth2RestOperations restTemplate;
     private static final String URL = "http://localhost:8081/api/me";
 
-    @Autowired
+    //@Autowired
     public MeServiceImpl(OAuth2RestOperations restTemplate) {
         this.restTemplate = restTemplate;
     }

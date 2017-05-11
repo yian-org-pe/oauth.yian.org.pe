@@ -3,7 +3,6 @@ package pe.org.yian.oauth.auth.server.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +43,16 @@ public class UserController {
 
 	@PreAuthorize("#oauth2.hasScope('write') and hasRole('ADMIN')")
 	@RequestMapping(value = "/{username}/password", method = RequestMethod.PUT)
-	public UserDto passwordReset(@RequestBody PasswordResetRequest passwordResetRequest,
+	public ResponseEntity changePassword(@RequestBody PasswordResetRequest passwordResetRequest,
 								 @PathVariable String username) {
 		userService.changePassword(username, passwordResetRequest.getNewPassword());
-		return userService.load(username);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PreAuthorize("#oauth2.hasScope('write') and hasRole('ADMIN')")
+	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
+	public ResponseEntity disable (@PathVariable String username) {
+        userService.disable(username);
+		return ResponseEntity.noContent().build();
 	}
 }

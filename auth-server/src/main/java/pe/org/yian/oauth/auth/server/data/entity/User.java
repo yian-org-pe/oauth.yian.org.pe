@@ -19,6 +19,8 @@ public class User {
 	private String email;
 	private String name;
 	private String password;
+	private Boolean enabled;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_has_roles", joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private List<Role> roles;
@@ -92,5 +94,13 @@ public class User {
 			this.organizations = new  ArrayList<>();
 		}
 		this.organizations.add(organization);
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 }

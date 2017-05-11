@@ -10,6 +10,7 @@ public class UserDto {
 	private String password;
 	private String email;
 	private String name;
+	private Boolean enabled;
 	private List<RoleDto> roles;
 	private List<OrganizationDto> organizations;
 	
@@ -71,12 +72,22 @@ public class UserDto {
 		this.organizations = organizations;
 	}
 
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	@Override
 	public String toString() {
 		return "UserDto{" +
 				"username='" + username + '\'' +
+				", password='" + password + '\'' +
 				", email='" + email + '\'' +
 				", name='" + name + '\'' +
+				", enabled=" + enabled +
 				'}';
 	}
 }

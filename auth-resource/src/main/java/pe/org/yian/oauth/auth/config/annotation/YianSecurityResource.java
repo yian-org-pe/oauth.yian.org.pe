@@ -24,7 +24,8 @@ public class YianSecurityResource extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and().authorizeRequests()
-                .antMatchers("/home", "/login", "/logout", "/static/**", "/webjars/**").permitAll()
+                // TODO: Make this externally configurable
+                .antMatchers("/home", "/app", "/app/**", "/login", "/logout", "/static/**", "/webjars/**").permitAll()
                 .and().authorizeRequests()
                 .anyRequest().authenticated();
     }
