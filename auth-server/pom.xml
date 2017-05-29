@@ -144,6 +144,15 @@
 					</plugin>
 				</plugins>
 			</build>
+			<dependencies>
+
+			</dependencies>
+		</profile>
+		<profile>
+			<id>tomcat</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 		</profile>
 	</profiles>
 </project>
