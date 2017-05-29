@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+import pe.org.yian.oauth.auth.data.dto.OrganizationDto;
 import pe.org.yian.oauth.auth.data.dto.RoleDto;
 import pe.org.yian.oauth.auth.data.dto.UserDto;
 import pe.org.yian.oauth.auth.server.data.entity.Organization;
@@ -57,7 +58,14 @@ public class UserServiceImpl implements UserService {
 			RoleDto dto = new RoleDto(role.getName(), role.getDescription());
 			roles.add(dto);
 		}
+
+		List<OrganizationDto> organizations = new ArrayList<>();
+		for (Organization org : user.getOrganizations()) {
+			OrganizationDto o = new OrganizationDto(org.getCode(), org.getName(), org.getStatus());
+			organizations.add(o);
+		}
 		UserDto userDto = new UserDto(user.getUsername(), user.getEmail(), user.getName(), roles);
+		userDto.setOrganizations(organizations);
 		return userDto;
 	}
 
