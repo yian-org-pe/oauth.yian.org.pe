@@ -27,7 +27,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.formLogin().loginPage("/uaa/login").permitAll()
 			.and()
-			.logout().logoutUrl("/uaa/logout");
+			.logout().logoutUrl("/uaa/logout")
+		.and()
+		.csrf().disable();
 	}
 
 //	@Override
