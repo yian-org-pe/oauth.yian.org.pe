@@ -10,6 +10,8 @@ import pe.org.yian.oauth.auth.data.dto.UserDto;
 import pe.org.yian.oauth.auth.data.dto.request.PasswordResetRequest;
 import pe.org.yian.oauth.auth.server.service.UserService;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 /**
@@ -43,5 +45,15 @@ public class MeController {
         String username = principal.getName();
         userService.changePassword(username, passwordResetRequest.getNewPassword());
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ResponseEntity logout(HttpServletRequest request) {
+        try {
+            request.logout();
+        } catch (ServletException e) {
+            LOGGER.error("Error logout", e);
+        }
+        return ResponseEntity.ok().build();
     }
 }
